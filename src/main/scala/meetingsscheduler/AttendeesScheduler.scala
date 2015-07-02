@@ -2,30 +2,36 @@ package meetingsscheduler
 
 import org.joda.time._
 
+trait Scheduler {
 
-class Scheduler {
+  def findCommonFreeSlots(attendees: List[ScheduleInfo], timeFrameToBeScanned: Interval,
+                          meetingDurationMinutes: Int, nrOfSlotsToBeFound: Int): List[Interval]
+
+}
+
+class AttendeesScheduler extends Scheduler {
 
   private val MeetingMaxDurationMinutes = 480
 
-  def findSlots(attendees: List[AttendeeScheduleInfo], timePeriodToBeScanned: Interval,
-                meetingDurationMinutes: Int, nrOfSlotsToBeFound: Int): List[Interval] = {
+  def findCommonFreeSlots(attendees: List[ScheduleInfo], timeFrameToBeScanned: Interval,
+                  meetingDurationMinutes: Int, nrOfSlotsToBeFound: Int): List[Interval] = {
 
     require(meetingDurationMinutes < MeetingMaxDurationMinutes, s"Meeting may not take more then $MeetingMaxDurationMinutes minutes")
 
-    val attendeesWithAvailableSlots: List[(AttendeeScheduleInfo, List[Interval])] = attendees.map(
-      attendee => (attendee, attendee.availableSlots(timePeriodToBeScanned, meetingDurationMinutes))
+    val attendeesWithAvailableSlots = attendees.map(
+      attendee => (attendee, attendee.availableSlots(timeFrameToBeScanned, meetingDurationMinutes))
     )
 
     var result = List[Interval]()
     attendeesWithAvailableSlots.length match {
       case 0 => result = List()
-      case 1 => result = attendeesWithAvailableSlots(0)._2
+      case 1 => result = attendeesWithAvailableSlots.head._2
       case other =>
 
-        val userFirstSlots = attendeesWithAvailableSlots(0)._2
+        val userFirstSlots = attendeesWithAvailableSlots.head._2
         val userSecondSlots = attendeesWithAvailableSlots(1)._2
 
-        var firstTwoUsersOverlappingSlotOption = findFirstOverlappingSlot(timePeriodToBeScanned.getStart, userFirstSlots, userSecondSlots, meetingDurationMinutes)
+        var firstTwoUsersOverlappingSlotOption = findFirstOverlappingSlot(timeFrameToBeScanned.getStart, userFirstSlots, userSecondSlots, meetingDurationMinutes)
 
         while (firstTwoUsersOverlappingSlotOption.isDefined && result.length < nrOfSlotsToBeFound) {
 

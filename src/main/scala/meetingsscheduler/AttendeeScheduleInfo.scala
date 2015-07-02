@@ -3,7 +3,22 @@ package meetingsscheduler
 import org.joda.time._
 import TimeOperations._
 
-class AttendeeScheduleInfo(name : String, zone: DateTimeZone, workingHours: LocalTimeSlot, meetings: List[Interval]) {
+trait ScheduleInfo {
+
+  def nextWorkSlot(from: DateTime): Interval
+
+  def availableSlots(timeLine: Interval): List[Interval]
+
+  def availableSlots(timeLine: Interval, durationMinutes: Int): List[Interval]
+
+  def workFreeTimeSlots(timeLine: Interval): List[Interval]
+
+  def isWorkTime(dateTime: DateTime): Boolean
+
+}
+
+class AttendeeScheduleInfo(name : String, zone: DateTimeZone, workingHours: LocalTimeSlot, meetings: List[Interval])
+  extends ScheduleInfo {
 
   private implicit def dateTimeOrdering: Ordering[Interval] = Ordering.fromLessThan(_.getStart isBefore _.getStart)
 

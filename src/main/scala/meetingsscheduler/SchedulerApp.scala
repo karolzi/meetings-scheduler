@@ -16,7 +16,7 @@ object SchedulerApp {
       val meetingLengthMinutes = args(3).toInt
       val nrOfSlotsToBeFound = args(4).toInt
 
-      val result = new Scheduler().findSlots(
+      val result = new AttendeesScheduler().findCommonFreeSlots(
         JsonReader.read(dataFilePath),
         new Interval(timePeriodToBeScannedFrom, timePeriodToBeScannedTo),
         meetingLengthMinutes,
