@@ -133,9 +133,13 @@ object TimeOperations {
   def parseWarsawDatesToInterval(from: String, to: String) = {
     new Interval(parseWarsawDateToUTC(from), parseWarsawDateToUTC(to))
   }
+
   def parseNewYorkDatesToInterval(from: String, to: String) = {
     new Interval(parseNewYorkDateToUTC(from), parseNewYorkDateToUTC(to))
   }
 
+  def parseUTCDatesToInterval(from: String, to: String) = {
+    new Interval(parseDateUTC(from), parseDateUTC(to))
+  }
 
 }
