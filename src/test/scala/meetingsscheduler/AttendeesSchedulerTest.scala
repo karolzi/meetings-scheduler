@@ -8,13 +8,13 @@ import org.specs2.specification.Scope
 import TimeOperations._
 
 @RunWith(classOf[JUnitRunner])
-class SchedulerTest extends SpecificationWithJUnit {
+class AttendeesSchedulerTest extends SpecificationWithJUnit {
 
   sequential
 
   "test" should {
 
-    "find one common slot for 4 users" in new CalendarScope {
+    "find free common slots for all users 1st" in new CalendarScope {
 
       //given
       protected val attendee1 = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_17,
@@ -23,7 +23,7 @@ class SchedulerTest extends SpecificationWithJUnit {
           parseWarsawDatesToInterval("2015-04-04 11:00", "2015-04-04 11:20")
         )
       )
-      protected val attendee2= new AttendeeScheduleInfo("John", ZoneNewYork, slot_9_17,
+      protected val attendee2 = new AttendeeScheduleInfo("John", ZoneNewYork, slot_9_17,
         List(
           parseNewYorkDatesToInterval("2015-04-04 09:00", "2015-04-04 10:00"),
           parseNewYorkDatesToInterval("2015-04-04 13:00", "2015-04-04 13:20")
@@ -44,7 +44,7 @@ class SchedulerTest extends SpecificationWithJUnit {
       result.head must_== new Interval(parseDateUTC("2015-04-04 14:00"), parseDateUTC("2015-04-04 15:00"))
     }
 
-    "find two common slots for 4 users" in new CalendarScope {
+    "find free common slots for all users 2nd" in new CalendarScope {
 
       //given
       val attendee1 = new AttendeeScheduleInfo("Attendee 1", ZoneWarsaw, LocalTimeSlot(new LocalTime("10:00"), new LocalTime("18:00")),
@@ -66,7 +66,7 @@ class SchedulerTest extends SpecificationWithJUnit {
       result(1) must_== new Interval(parseDateUTC("2015-04-04 15:30"), parseDateUTC("2015-04-04 16:00"))
     }
 
-    "find two common slots for 4 users fwe wf w" in new CalendarScope {
+    "find free common slots for all users 3rd" in new CalendarScope {
 
       //given
       val attendee1 = new AttendeeScheduleInfo("Attendee 1", ZoneWarsaw, LocalTimeSlot(new LocalTime("10:00"), new LocalTime("18:00")),
@@ -88,7 +88,7 @@ class SchedulerTest extends SpecificationWithJUnit {
       result must have size 0
     }
 
-    "find two common slots for 4 sfesrfwerwe" in new CalendarScope {
+    "find free common slots for all users 4rd" in new CalendarScope {
 
       //given
       val attendee1 = new AttendeeScheduleInfo("Attendee 1", ZoneWarsaw, slot_9_17,

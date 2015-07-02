@@ -7,7 +7,7 @@ import scala.util.parsing.json.JSON
 
 import TimeOperations._
 
-object JsonReader {
+object SchedulesJsonReader {
 
   private val FieldName = "name"
   private val FieldZone = "zone"

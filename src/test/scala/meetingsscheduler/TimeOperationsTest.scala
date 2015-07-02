@@ -1,6 +1,5 @@
 package meetingsscheduler
 
-import org.joda.time.Interval
 import org.junit.runner.RunWith
 import org.specs2.mutable.SpecificationWithJUnit
 import org.specs2.runner.JUnitRunner

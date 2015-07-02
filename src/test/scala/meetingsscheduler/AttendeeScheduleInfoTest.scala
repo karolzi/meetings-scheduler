@@ -108,7 +108,7 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
 
 "AttendeeScheduleInfo" should {
 
-  "nextWorkSlot 1" in new AttendeeTestScope {
+  "find nextWorkSlot 1st" in new AttendeeTestScope {
 
     //given
     val dateSearchStart = parseWarsawDateToUTC("2015-04-04 02:01")
@@ -117,14 +117,11 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendeeWarsaw.nextWorkSlot(dateSearchStart)
 
     //then
-    result must_== new Interval(
-      parseWarsawDateToUTC("2015-04-04 08:00"),
-      parseWarsawDateToUTC("2015-04-04 16:00")
-    )
+    result must_== parseWarsawDatesToInterval("2015-04-04 08:00", "2015-04-04 16:00")
 
   }
 
-  "nextWorkSlot 2" in new AttendeeTestScope {
+  "find nextWorkSlot 2nd" in new AttendeeTestScope {
 
     //given
     val dateSearchStart = parseWarsawDateToUTC("2015-04-04 18:01")
@@ -133,14 +130,10 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendeeWarsaw.nextWorkSlot(dateSearchStart)
 
     //then
-    result must_== new Interval(
-      parseWarsawDateToUTC("2015-04-05 08:00"),
-      parseWarsawDateToUTC("2015-04-05 16:00")
-    )
-
+    result must_== parseWarsawDatesToInterval("2015-04-05 08:00", "2015-04-05 16:00")
   }
 
-  "nextWorkSlot 3" in new AttendeeTestScope {
+  "find nextWorkSlot 3rd" in new AttendeeTestScope {
 
     //given
     val dateSearchStart = parseWarsawDateToUTC("2015-04-04 12:01")
@@ -149,14 +142,11 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendeeWarsaw.nextWorkSlot(dateSearchStart)
 
     //then
-    result must_== new Interval(
-      parseWarsawDateToUTC("2015-04-04 12:01"),
-      parseWarsawDateToUTC("2015-04-04 16:00")
-    )
+    result must_== parseWarsawDatesToInterval("2015-04-04 12:01", "2015-04-04 16:00")
 
   }
 
-  "nextWorkSlot 4" in new AttendeeTestScope {
+  "find nextWorkSlot 4th" in new AttendeeTestScope {
     //given
     val attendee = new AttendeeScheduleInfo("John", ZoneNewYork, slot_9_17, List())
     val dateSearchStart = parseNewYorkDateToUTC("2015-04-04 09:00")
@@ -165,13 +155,10 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendee.nextWorkSlot(dateSearchStart)
 
     //then
-    result must_== new Interval(
-      parseNewYorkDateToUTC("2015-04-04 09:00"),
-      parseNewYorkDateToUTC("2015-04-04 17:00")
-    )
+    result must_== parseNewYorkDatesToInterval("2015-04-04 09:00", "2015-04-04 17:00")
   }
 
-  "nextWorkSlot 5" in new AttendeeTestScope {
+  "find nextWorkSlot 5th" in new AttendeeTestScope {
     //given
     val attendee = new AttendeeScheduleInfo("John", ZoneNewYork, slot_9_17, List())
     val dateSearchStart = parseNewYorkDateToUTC("2015-04-04 08:59")
@@ -180,10 +167,10 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendee.nextWorkSlot(dateSearchStart)
 
     //then
-    result must_== new Interval(parseNewYorkDateToUTC("2015-04-04 09:00"), parseNewYorkDateToUTC("2015-04-04 17:00"))
+    result must_== parseNewYorkDatesToInterval("2015-04-04 09:00", "2015-04-04 17:00")
   }
 
-  "nextWorkSlot 6" in new AttendeeTestScope {
+  "find nextWorkSlot 6th" in new AttendeeTestScope {
     //given
     val attendee = new AttendeeScheduleInfo("John", ZoneNewYork, slot_9_17, List())
     val dateSearchStart = parseNewYorkDateToUTC("2015-04-04 09:01")
@@ -192,10 +179,10 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendee.nextWorkSlot(dateSearchStart)
 
     //then
-    result must_== new Interval(parseNewYorkDateToUTC("2015-04-04 09:01"), parseNewYorkDateToUTC("2015-04-04 17:00"))
+    result must_== parseNewYorkDatesToInterval("2015-04-04 09:01", "2015-04-04 17:00")
   }
 
-  "nextWorkSlot 7" in new AttendeeTestScope {
+  "find nextWorkSlot 7th" in new AttendeeTestScope {
     //given
     val attendee = new AttendeeScheduleInfo("John", ZoneNewYork, slot_9_17, List())
     val dateSearchStart = parseNewYorkDateToUTC("2015-04-04 17:00")
@@ -204,10 +191,10 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendee.nextWorkSlot(dateSearchStart)
 
     //then
-    result must_== new Interval(parseNewYorkDateToUTC("2015-04-05 09:00"), parseNewYorkDateToUTC("2015-04-05 17:00"))
+    result must_== parseNewYorkDatesToInterval("2015-04-05 09:00", "2015-04-05 17:00")
   }
 
-  "workFreeTimeSlots 1" in new AttendeeTestScope {
+  "find free time slots 1st" in new AttendeeTestScope {
 
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16, List()
@@ -219,12 +206,12 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendee.workFreeTimeSlots(new Interval(from, to))
 
     result must have size 2
-    result.head must_== new Interval(parseWarsawDateToUTC("2015-04-03 22:00"), parseWarsawDateToUTC("2015-04-04 08:00"))
-    result(1) must_== new Interval(parseWarsawDateToUTC("2015-04-04 16:00"), parseWarsawDateToUTC("2015-04-05 02:00"))
+    result.head must_== parseWarsawDatesToInterval("2015-04-03 22:00", "2015-04-04 08:00")
+    result(1) must_== parseWarsawDatesToInterval("2015-04-04 16:00", "2015-04-05 02:00")
 
   }
 
-  "workFreeTimeSlots 2" in new AttendeeTestScope {
+  "find free time slots 2nd" in new AttendeeTestScope {
 
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16, List())
@@ -235,12 +222,12 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendee.workFreeTimeSlots(new Interval(from, to))
 
     result must have size 2
-    result.head must_== new Interval(parseWarsawDateToUTC("2015-04-04 02:00"), parseWarsawDateToUTC("2015-04-04 08:00"))
-    result(1) must_== new Interval(parseWarsawDateToUTC("2015-04-04 16:00"), parseWarsawDateToUTC("2015-04-04 22:00"))
+    result.head must_== parseWarsawDatesToInterval("2015-04-04 02:00", "2015-04-04 08:00")
+    result(1) must_== parseWarsawDatesToInterval("2015-04-04 16:00", "2015-04-04 22:00")
 
   }
 
-  "workFreeTimeSlots 3" in new AttendeeTestScope {
+  "find free time slots 3rd" in new AttendeeTestScope {
 
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16, List())
@@ -251,13 +238,13 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendee.workFreeTimeSlots(new Interval(from, to))
 
     result must have size 3
-    result.head must_== new Interval(parseWarsawDateToUTC("2015-04-03 22:00"), parseWarsawDateToUTC("2015-04-04 08:00"))
-    result(1) must_== new Interval(parseWarsawDateToUTC("2015-04-04 16:00"), parseWarsawDateToUTC("2015-04-05 08:00"))
-    result(2) must_== new Interval(parseWarsawDateToUTC("2015-04-05 16:00"), parseWarsawDateToUTC("2015-04-05 22:00"))
+    result.head must_== parseWarsawDatesToInterval("2015-04-03 22:00", "2015-04-04 08:00")
+    result(1) must_== parseWarsawDatesToInterval("2015-04-04 16:00", "2015-04-05 08:00")
+    result(2) must_== parseWarsawDatesToInterval("2015-04-05 16:00", "2015-04-05 22:00")
 
   }
 
-  "workFreeTimeSlots 4" in new AttendeeTestScope {
+  "find free time slots 4th" in new AttendeeTestScope {
 
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16, List())
@@ -272,7 +259,7 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
 
   }
 
-  "workFreeTimeSlots 5" in new AttendeeTestScope {
+  "find free time slots 5th" in new AttendeeTestScope {
 
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16, List())
@@ -288,7 +275,7 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
 
   }
 
-  "workFreeTimeSlots 6" in new AttendeeTestScope {
+  "find free time slots 6th" in new AttendeeTestScope {
 
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16, List())
@@ -302,7 +289,7 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
 
   }
 
-  "workFreeTimeSlots 7" in new AttendeeTestScope {
+  "find free time slots 7th" in new AttendeeTestScope {
 
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16, List())
@@ -317,7 +304,7 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
 
   }
 
-  "workFreeTimeSlots 8" in new AttendeeTestScope {
+  "find free time slots 8th" in new AttendeeTestScope {
 
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneNewYork, slot_9_17, List())
@@ -333,7 +320,7 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
 
   }
 
-  "allAvailableSlots 1" in new AttendeeTestScope {
+  "find free time slots 9th" in new AttendeeTestScope {
 
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16,
@@ -357,7 +344,7 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
 
   }
 
-  "allAvailableSlots 2" in new AttendeeTestScope {
+  "find free time slots 9th" in new AttendeeTestScope {
 
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16,
@@ -379,7 +366,7 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
 
   }
 
-  "availableSlotsWithDuration 1" in new AttendeeTestScope {
+  "find available slot with duration 1st" in new AttendeeTestScope {
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16,
       List(
@@ -398,7 +385,7 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     result(1) must_== new Interval(parseWarsawDateToUTC("2015-04-04 11:00"), parseWarsawDateToUTC("2015-04-04 13:00"))
   }
 
-  "availableSlotsWithDuration 3" in new AttendeeTestScope {
+  "find available slot with duration 2nd" in new AttendeeTestScope {
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16,
       List(
@@ -415,7 +402,7 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     result must have size 0
   }
 
-  "availableSlotsWithDuration 3" in new AttendeeTestScope {
+  "find available slot with duration 3rd" in new AttendeeTestScope {
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16,
       List(
@@ -430,15 +417,15 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendee.availableSlots(new Interval(from, to), 30)
 
     result must have size 1
-    result.head must_== new Interval(parseWarsawDateToUTC("2015-04-04 15:30"), parseWarsawDateToUTC("2015-04-04 16:00"))
+    result.head must_== parseWarsawDatesToInterval("2015-04-04 15:30", "2015-04-04 16:00")
   }
 
-  "availableSlotsWithDuration 2" in new AttendeeTestScope {
+  "find available slot with duration 4rd" in new AttendeeTestScope {
     //given
     val attendee = new AttendeeScheduleInfo("Maria", ZoneWarsaw, slot_8_16,
       List(
-        new Interval(parseWarsawDateToUTC("2015-04-04 10:00"), parseWarsawDateToUTC("2015-04-04 11:00")),
-        new Interval(parseWarsawDateToUTC("2015-04-04 13:00"), parseWarsawDateToUTC("2015-04-04 15:40"))
+        parseWarsawDatesToInterval("2015-04-04 10:00", "2015-04-04 11:00"),
+        parseWarsawDatesToInterval("2015-04-04 13:00", "2015-04-04 15:40")
       )
     )
     val from = parseWarsawDateToUTC("2015-04-04 08:00")
@@ -448,9 +435,9 @@ class AttendeeScheduleInfoTest extends SpecificationWithJUnit {
     val result = attendee.availableSlots(new Interval(from, to), 30)
 
     result must have size 3
-    result.head must_== new Interval(parseWarsawDateToUTC("2015-04-04 08:00"), parseWarsawDateToUTC("2015-04-04 10:00"))
-    result(1) must_== new Interval(parseWarsawDateToUTC("2015-04-04 11:00"), parseWarsawDateToUTC("2015-04-04 13:00"))
-    result(2) must_== new Interval(parseWarsawDateToUTC("2015-04-05 08:00"), parseWarsawDateToUTC("2015-04-05 16:00"))
+    result.head must_== parseWarsawDatesToInterval("2015-04-04 08:00", "2015-04-04 10:00")
+    result(1) must_== parseWarsawDatesToInterval("2015-04-04 11:00", "2015-04-04 13:00")
+    result(2) must_== parseWarsawDatesToInterval("2015-04-05 08:00", "2015-04-05 16:00")
   }
 
 }

@@ -1,5 +1,10 @@
 ## Build and test
     mvn clean package
+    
+## Info
+    Inside app_to_test folder is placed packed jar file for test. It is useful for tests where compilation
+    environment is missing.
+    
 ## Print usage
     java -classpath ./app_to_test/meetings-scheduler-1.0.jar meetingsscheduler.SchedulerApp
     
