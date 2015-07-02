@@ -1,7 +1,7 @@
 ## Build and test
     mvn clean package
 ## Print usage
-    java -classpath ./app_to_test/web-dev-calendar-1.0.jar meetingsscheduler.CalendarApp
+    java -classpath ./app_to_test/meetings-scheduler-1.0.jar meetingsscheduler.SchedulerApp
     
     # Output
     
@@ -16,7 +16,7 @@
 ## Run example
 
     Command:
-    java -classpath ./app_to_test/web-dev-calendar-1.0.jar meetingsscheduler.CalendarApp ./data/attendees1.json "2015-04-03 17:00" "2015-04-04 17:00" 40 1
+    java -classpath ./app_to_test/meetings-scheduler-1.0.jar meetingsscheduler.SchedulerApp ./data/attendees1.json "2015-04-03 17:00" "2015-04-04 17:00" 40 1
     
     Result. List of intervals (UTC time)
     Slot: [2015-04-04T14:00:00.000Z - 2015-04-04T15:00:00.000Z]
@@ -45,7 +45,7 @@
     attendees1.json
     
     Command:
-    java -classpath ./app_to_test/web-dev-calendar-1.0.jar meetingsscheduler.CalendarApp ./data/attendees1.json "2015-04-03 17:00" "2015-04-04 17:00" 40 1
+    java -classpath ./app_to_test/meetings-scheduler-1.0.jar meetingsscheduler.SchedulerApp ./data/attendees1.json "2015-04-03 17:00" "2015-04-04 17:00" 40 1
     
     Result:
     Slot: [2015-04-04T14:00:00.000Z - 2015-04-04T15:00:00.000Z]

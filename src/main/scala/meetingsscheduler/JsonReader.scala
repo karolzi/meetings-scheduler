@@ -16,7 +16,7 @@ object JsonReader {
   private val FieldWorkingHoursEnd = "end"
   private val FieldMeetings = "meetings"
 
-  def read(filePath: String): List[Attendee] = {
+  def read(filePath: String): List[AttendeeScheduleInfo] = {
     val attendeesJson = JSON.parseFull(Source.fromFile(filePath).getLines().mkString).get.asInstanceOf[List[Map[String, Any]]]
 
     val attendees = attendeesJson.map {
@@ -32,7 +32,7 @@ object JsonReader {
             TimeOperations.parseDateToUTC(meeting(FieldWorkingHoursEnd).toString, zone)
           )
         )
-        new Attendee(name, zone, workingHoursSlot, meetingsList)
+        new AttendeeScheduleInfo(name, zone, workingHoursSlot, meetingsList)
     }
 
     attendees
