@@ -3,6 +3,7 @@ package meetingsscheduler
 import org.joda.time.Interval
 import TimeOperations._
 
+
 import scala.util.control.NonFatal
 
 object SchedulerApp {
