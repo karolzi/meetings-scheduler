@@ -65,7 +65,5 @@
       }
     ```
     
-    In ./data folder there are sample attendees' calendars. Commands to run them and expected results:
-    
-    attendees1.json
+    In ./data folder there are sample attendees' calendars.
     
