@@ -247,6 +247,22 @@ class TimeOperationsTest extends SpecificationWithJUnit {
       result.head must_== parseWarsawDatesToInterval("2015-04-04 10:00", "2015-04-04 11:00")
     }
 
+    "isAfter" in new TimeOperationsTestScope {
+      //given
+      val intervals = List(
+        parseWarsawDatesToInterval("2015-04-04 08:00", "2015-04-04 14:50"),
+        parseWarsawDatesToInterval("2015-04-04 15:30", "2015-04-04 16:00")
+      )
+      val from = parseWarsawDateToUTC("2015-04-04 14:50")
+
+      //when
+      val result = TimeOperations.intervalsAfter(from, intervals)
+
+      //then
+      result must have size 1
+      result.head must_== parseWarsawDatesToInterval("2015-04-04 15:30", "2015-04-04 16:00")
+    }
+
   }
 
   protected trait TimeOperationsTestScope extends Scope {

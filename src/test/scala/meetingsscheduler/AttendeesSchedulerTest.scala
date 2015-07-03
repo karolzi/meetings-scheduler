@@ -86,7 +86,7 @@ class AttendeesSchedulerTest extends SpecificationWithJUnit {
       result must have size 0
     }
 
-    "find free common slots for all users 4rd" in new CalendarScope {
+    "find free common slots for all users 4th" in new CalendarScope {
 
       //given
       val attendee1 = new AttendeeScheduleInfo("Attendee 1", ZoneWarsaw, slot_9_17,
@@ -105,6 +105,26 @@ class AttendeesSchedulerTest extends SpecificationWithJUnit {
       result must have size 2
       result.head must_== parseWarsawDatesToInterval("2015-04-04 10:00", "2015-04-04 17:00")
       result(1) must_== parseWarsawDatesToInterval("2015-04-05 10:00", "2015-04-05 17:00")
+    }
+
+    "find free common slots for all users 5th" in new CalendarScope {
+
+      //given
+      val attendee1 = new AttendeeScheduleInfo("Attendee 1", ZoneWarsaw, slot_10_18,
+        List(parseWarsawDatesToInterval("2015-04-04 16:50", "2015-04-04 17:30"))
+      )
+      val attendee2 = new AttendeeScheduleInfo("Attendee 2", ZoneNewYork, slot_9_17, List())
+      val attendee3 = new AttendeeScheduleInfo("Attendee 3", ZoneWarsaw, slot_10_19,
+        List(parseWarsawDatesToInterval("2015-04-04 15:00", "2015-04-04 16:00"))
+      )
+      val attendees = List(attendee1, attendee2)//), attendee3)
+      val timePeriodToBeScanned = parseWarsawDatesToInterval("2015-04-03 19:00", "2015-04-07 19:00")
+
+      //when
+      val result = new AttendeesScheduler().findCommonFreeSlots(attendees, timePeriodToBeScanned, 60, 10)
+
+      //then
+      result must have size 4
     }
 
   }

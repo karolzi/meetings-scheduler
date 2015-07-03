@@ -1,6 +1,7 @@
 package meetingsscheduler
 
 import org.joda.time._
+import TimeOperations._
 
 trait Scheduler {
 
@@ -31,23 +32,29 @@ class AttendeesScheduler extends Scheduler {
         val userFirstSlots = attendeesWithAvailableSlots.head._2
         val userSecondSlots = attendeesWithAvailableSlots(1)._2
 
-        var firstTwoUsersOverlappingSlotOption = findFirstOverlappingSlot(timeFrameToBeScanned.getStart, userFirstSlots, userSecondSlots, meetingDurationMinutes)
+        var firstTwoUsersCommonSlotOption = findFirstOverlappingSlot(timeFrameToBeScanned.getStart, userFirstSlots, userSecondSlots, meetingDurationMinutes)
 
-        while (firstTwoUsersOverlappingSlotOption.isDefined && result.length < nrOfSlotsToBeFound) {
+        while (firstTwoUsersCommonSlotOption.isDefined && result.length < nrOfSlotsToBeFound) {
 
-          var commonSlotOption = firstTwoUsersOverlappingSlotOption
-
-          for (nextUserIndex <- 0 to attendeesWithAvailableSlots.length - 1 if commonSlotOption.isDefined) {
-            commonSlotOption = findFirstOverlappingSlot(commonSlotOption.get, attendeesWithAvailableSlots(nextUserIndex)._2, meetingDurationMinutes)
+          var allUsersCommonSlotOption = firstTwoUsersCommonSlotOption
+          for (nextUserIndex <- 0 to attendeesWithAvailableSlots.length - 1 if allUsersCommonSlotOption.isDefined) {
+            allUsersCommonSlotOption = findFirstOverlappingSlot(allUsersCommonSlotOption.get, attendeesWithAvailableSlots(nextUserIndex)._2, meetingDurationMinutes)
               .map(slotForTwoUsers => slotForTwoUsers._1)
           }
 
-          commonSlotOption match {
+          allUsersCommonSlotOption match {
             case Some(commonSlot) =>
               result = result :+ commonSlot
-              firstTwoUsersOverlappingSlotOption = findFirstOverlappingSlot(commonSlot.getEnd, userFirstSlots, userSecondSlots, meetingDurationMinutes)
+              firstTwoUsersCommonSlotOption = findFirstOverlappingSlot(commonSlot.getEnd, userFirstSlots,
+                userSecondSlots, meetingDurationMinutes)
             case None =>
-              firstTwoUsersOverlappingSlotOption = None
+              val intervalsAfterLastSearch = intervalsAfter(firstTwoUsersCommonSlotOption.get.getEnd, userFirstSlots)
+              if(intervalsAfterLastSearch.length > 0) {
+                firstTwoUsersCommonSlotOption = findFirstOverlappingSlot(intervalsAfterLastSearch(0).getStart,
+                  userFirstSlots, userSecondSlots, meetingDurationMinutes)
+              } else {
+                firstTwoUsersCommonSlotOption = None
+              }
           }
 
         }
@@ -58,8 +65,8 @@ class AttendeesScheduler extends Scheduler {
   }
 
   private def findFirstOverlappingSlot(from: DateTime, intervalsLeft: List[Interval], intervalsRight: List[Interval], meetingDurationMinutes: Int): Option[Interval] = {
-    val intervalsLeftAfterFrom = TimeOperations.intervalsAfter(from, intervalsLeft)
-    val intervalsRightAfterFrom = TimeOperations.intervalsAfter(from, intervalsRight)
+    val intervalsLeftAfterFrom = intervalsAfter(from, intervalsLeft)
+    val intervalsRightAfterFrom = intervalsAfter(from, intervalsRight)
     intervalsLeftAfterFrom match {
       case head :: tail =>
         findFirstOverlappingSlot(head, intervalsRightAfterFrom, meetingDurationMinutes) match {
